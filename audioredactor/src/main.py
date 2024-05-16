@@ -195,8 +195,6 @@ class AudioEditor(QWidget):
         except ValueError as e:
             print(f"Invalid input for speed: {e}")
 
-    from PyQt6.QtWidgets import QMessageBox
-
     def open_sound(self):
         path, _ = QFileDialog.getOpenFileName(self, "What file do you want to import?", "/home/",
                                               "MP3 Files (*.mp3);;All Files (*)")
@@ -254,5 +252,3 @@ if __name__ == "__main__":
     ex = AudioEditor()
     ex.show()
     sys.exit(app.exec())
-
-
