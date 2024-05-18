@@ -9,9 +9,9 @@ class ControlPanel(QWidget):
         self.initUI()
 
     def initUI(self):
-        self.play_btn = self.create_button(icon='1.png', slot=self.play, enabled=False)
-        self.pause_btn = self.create_button(icon='2.png', slot=self.pause, enabled=False)
-        self.stop_btn = self.create_button(icon='3.png', slot=self.stop, enabled=False)
+        self.play_btn = self.create_button(icon='pictures/1.png', slot=self.play, enabled=False)
+        self.pause_btn = self.create_button(icon='pictures/2.png', slot=self.pause, enabled=False)
+        self.stop_btn = self.create_button(icon='pictures/3.png', slot=self.stop, enabled=False)
 
         control_layout = QHBoxLayout()
         control_layout.addWidget(self.play_btn)

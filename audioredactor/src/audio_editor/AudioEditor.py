@@ -1,16 +1,16 @@
-from ControlPanel import ControlPanel
-from EditPanel import EditPanel
+from .EditPanel import EditPanel
 from PyQt6.QtWidgets import (QWidget, QPushButton, QLabel, QVBoxLayout,
                              QHBoxLayout, QListWidget, QScrollBar, QDialog)
 from PyQt6.QtCore import Qt
-from SoundHandler import SoundHandler
+from .SoundHandler import SoundHandler
+from .ControlPanel import ControlPanel
 
 
 # Сделать френдли
 class AudioEditor(QWidget):
     def __init__(self):
         super().__init__()
-        self.sound_handler = SoundHandler()
+        self.sound_handler = SoundHandler(self)
         self.paused = False
 
         self.setWindowTitle('Audio Editor')
