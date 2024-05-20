@@ -10,6 +10,7 @@ class SoundHandler:
         mixer.init()
         self.parent = parent
 
+
     def open_sound(self):
         try:
             path, _ = QFileDialog.getOpenFileName(self.parent, "What file do you want to import?", "/home/",
@@ -22,7 +23,6 @@ class SoundHandler:
         except Exception as e:
             self.parent.make_warning_msg(f"Failed to open sound file: {e}", "WARNING")
 
-
     def save(self):
         self.song.save()
 
@@ -33,13 +33,10 @@ class SoundHandler:
         play_btn.setEnabled(False)
 
     def pause(self):
-        if mixer.music.get_busy():
-            mixer.music.pause()
+        mixer.music.pause()
 
     def unpause(self):
-        if mixer.music.get_busy():
-            mixer.music.unpause()
+        mixer.music.unpause()
 
     def stop(self):
-        if mixer.music.get_busy():
-            mixer.music.stop()
+        self.pause()

@@ -7,6 +7,7 @@ class ControlPanel(QWidget):
         super().__init__()
         self.sound_handler = sound_handler
         self.initUI()
+        self.paused = False
 
     def initUI(self):
         self.play_btn = self.create_button(icon='pictures/1.png', slot=self.play, enabled=False)
@@ -35,12 +36,13 @@ class ControlPanel(QWidget):
         self.sound_handler.play(self.play_btn)
 
     def pause(self):
-        if self.sound_handler.paused:
+        if self.paused:
             self.sound_handler.unpause()
-            self.sound_handler.paused = False
+            self.paused = False
         else:
             self.sound_handler.pause()
-            self.sound_handler.paused = True
+            self.paused = True
 
     def stop(self):
         self.sound_handler.stop()
+        self.paused = True
