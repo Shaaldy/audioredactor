@@ -13,21 +13,21 @@ class EditPanel(QWidget):
         self.undo_btn = self.create_button('Undo', self.get_undo, False)
         self.redo_btn = self.create_button('Redo', self.get_redo, False)
         self.speed_btn = self.create_button('Change Speed', self.get_speed, False)
-        self.speed_entry = self.create_line_edit(False)
+        self.speed_entry = self.create_line_edit(False, "Укажите число", '1.0')
         self.reverse_btn = self.create_button('Reverse', self.get_reverse, False)
         self.overlay_btn = self.create_button('Overlay', self.get_overlay, False)
         self.merge_btn = self.create_button('Merge', self.get_merge, False)
         self.volume_btn = self.create_button('Change Volume', self.get_volume, False)
-        self.volume_entry = self.create_line_edit(False)
+        self.volume_entry = self.create_line_edit(False, "Укажите на сколько увеличить или уменьшить громкость в дБ", '0')
         self.slice_btn = self.create_button('Slice', self.get_slice, False)
-        self.first_slice_entry = self.create_line_edit(False)
-        self.second_slice_entry = self.create_line_edit(False)
+        self.first_slice_entry = self.create_line_edit(False, "Укажите в секундах первую границу")
+        self.second_slice_entry = self.create_line_edit(False, "Укажите в секундах вторую границу")
         self.fade_in_btn = self.create_button('Fade In', self.get_fade_in, False)
-        self.fade_in_entry = self.create_line_edit(False)
+        self.fade_in_entry = self.create_line_edit(False, "Укажите в секундах длительность эффекта")
         self.fade_out_btn = self.create_button('Fade Out', self.get_fade_out, False)
-        self.fade_out_entry = self.create_line_edit(False)
+        self.fade_out_entry = self.create_line_edit(False, "Укажите в секундах длительность эффекта")
         self.repeat_btn = self.create_button('Repeat', self.get_repeat, False)
-        self.repeat_entry = self.create_line_edit(False)
+        self.repeat_entry = self.create_line_edit(False, "Укажите количество повторов", '0')
         self.save_btn = self.create_button('Save', self.sound_handler.save, False)
 
         self.main_layout = QVBoxLayout()
@@ -85,9 +85,13 @@ class EditPanel(QWidget):
             button.setIcon(QIcon(icon))
         return button
 
-    def create_line_edit(self, enabled=True):
+    def create_line_edit(self, enabled=True, tooltip=None, text=None):
         line_edit = QLineEdit()
         line_edit.setEnabled(enabled)
+        if tooltip:
+            line_edit.setToolTip(tooltip)
+        if text:
+            line_edit.setText(text)
         return line_edit
 
     # Add methods for undo, redo, speed, reverse, overlay, merge, volume, slice, fade in/out, repeat, save
@@ -135,7 +139,7 @@ class EditPanel(QWidget):
             vol_arg = float(vol_arg)
         except ValueError:
             vol_arg = None
-        if vol_arg is not None and vol_arg > 0:
+        if vol_arg is not None:
             self.sound_handler.song.volume_change(vol_arg)
             self.parent().update_list()
         else:

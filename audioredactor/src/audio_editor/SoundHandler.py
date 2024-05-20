@@ -10,7 +10,6 @@ class SoundHandler:
         mixer.init()
         self.parent = parent
 
-
     def open_sound(self):
         try:
             path, _ = QFileDialog.getOpenFileName(self.parent, "What file do you want to import?", "/home/",
