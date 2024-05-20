@@ -1,5 +1,4 @@
 from pydub import AudioSegment
-from tkinter import filedialog
 from PyQt6.QtWidgets import QFileDialog
 
 
@@ -33,8 +32,8 @@ class Sound:
 
     def volume_change(self, vol):
         self.stack.append(self.track)
-        self.history_stack.append(f'Volume changed to {vol} db')
-        self.track = self.track + vol
+        self.history_stack.append(f'Volume changed by {vol} dB')
+        self.track = self.track.apply_gain(vol)
 
     def slice(self, begin, end):
         ms1 = begin * 1000
