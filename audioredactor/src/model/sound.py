@@ -1,5 +1,6 @@
 from pydub import AudioSegment
 from tkinter import filedialog
+from PyQt6.QtWidgets import QFileDialog
 
 
 class Sound:
@@ -21,9 +22,14 @@ class Sound:
         self.track = sound_with_altered_frame_rate.set_frame_rate(self.track.frame_rate)
 
     def save(self):
-        save_path = filedialog.asksaveasfilename(initialdir="/home/", title=
-        "Where do you want to save the modified file?", filetypes=(("mp3 files", "*.mp3"), ("all files", "*.*")))
-        self.track.export(save_path, bitrate="320k", format="mp3")
+        save_path, _ = QFileDialog.getSaveFileName(
+            None,
+            "Where do you want to save the modified file?",
+            "/home/",
+            "MP3 files (*.mp3);;All files (*.*)"
+        )
+        if save_path:
+            self.track.export(save_path, bitrate="320k", format="mp3")
 
     def volume_change(self, vol):
         self.stack.append(self.track)
@@ -48,13 +54,18 @@ class Sound:
         self.track = self.track * 2
 
     def merge(self):
-        path = filedialog.askopenfilename(initialdir="/home/", title="What file do you want to import?",
-                                          filetypes=(("mp3 files", "*.mp3"), ("all files", "*.*")))
-        track = AudioSegment.from_mp3(path)
-        s = str(path.split('/')[-1])
-        self.stack.append(self.track)
-        self.history_stack.append(f'Merge with {s}')
-        self.track = self.track + track
+        path, _ = QFileDialog.getOpenFileName(
+            None,
+            "What file do you want to import?",
+            "/home/",
+            "MP3 files (*.mp3);;All files (*.*)"
+        )
+        if path:
+            track = AudioSegment.from_mp3(path)
+            s = str(path.split('/')[-1])
+            self.stack.append(self.track)
+            self.history_stack.append(f'Merge with {s}')
+            self.track = self.track + track
 
     def fade_in(self, seconds):
         ms = int(seconds * 1000)
@@ -70,12 +81,17 @@ class Sound:
 
     def overlay(self):
         self.stack.append(self.track)
-        self.filePath = filedialog.askopenfilename(initialdir="/home/", title="What file do you want to import?",
-                                                   filetypes=(("mp3 files", "*.mp3"), ("all files", "*.*")))
-        self.overlayTrack = AudioSegment.from_mp3(self.filePath)
-        name = self.filePath.split('/')[-1]
-        self.history_stack.append(f'Overlay by {name}')
-        self.track = self.track.overlay(self.overlayTrack)
+        filePath, _ = QFileDialog.getOpenFileName(
+            None,
+            "What file do you want to import?",
+            "/home/",
+            "MP3 files (*.mp3);;All files (*.*)"
+        )
+        if filePath:
+            self.overlayTrack = AudioSegment.from_mp3(filePath)
+            name = filePath.split('/')[-1]
+            self.history_stack.append(f'Overlay by {name}')
+            self.track = self.track.overlay(self.overlayTrack)
 
     def undo(self):
         self.queue.insert(0, self.track)
