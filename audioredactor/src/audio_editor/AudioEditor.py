@@ -4,18 +4,19 @@ from PyQt6.QtWidgets import (QWidget, QPushButton, QLabel, QVBoxLayout,
 from PyQt6.QtCore import Qt
 from .SoundHandler import SoundHandler
 from .ControlPanel import ControlPanel
+from .TimeLine import TimeLine
 
 
 # Сделать френдли
 class AudioEditor(QWidget):
+    
     def __init__(self):
         super().__init__()
+        self.timeline = TimeLine(self)
         self.sound_handler = SoundHandler(self)
-        self.paused = False
-
         self.setWindowTitle('Audio Editor')
-        self.setGeometry(100, 100, 700, 700)
-        self.setStyleSheet('background-color: grey;')
+        self.setGeometry(400, 100, 600, 650)
+        self.setStyleSheet('background-color: dark; color: white; font-size: 16px;')
 
         self.initUI()
 
@@ -31,10 +32,14 @@ class AudioEditor(QWidget):
         self.listbox = QListWidget()
         list_layout.addWidget(self.listbox)
 
+
+        self.main_layout.addWidget(self.timeline)
+
         self.scrollbar = QScrollBar()
         self.scrollbar.setOrientation(Qt.Orientation.Vertical)
         list_layout.addWidget(self.scrollbar)
         self.main_layout.addLayout(list_layout)
+
 
         self.setLayout(self.main_layout)
 

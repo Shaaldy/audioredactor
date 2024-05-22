@@ -30,6 +30,7 @@ class Sound:
         if save_path:
             self.track.export(save_path, bitrate="320k", format="mp3")
 
+
     def volume_change(self, vol):
         self.stack.append(self.track)
         self.history_stack.append(f'Volume changed by {vol} dB')

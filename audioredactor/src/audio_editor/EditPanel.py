@@ -30,48 +30,53 @@ class EditPanel(QWidget):
         self.repeat_entry = self.create_line_edit(False, "Укажите количество повторов", '0')
         self.save_btn = self.create_button('Save', self.sound_handler.save, False)
 
-        self.main_layout = QVBoxLayout()
-        self.main_layout.addWidget(self.open_btn)
-        self.main_layout.addWidget(self.undo_btn)
-        self.main_layout.addWidget(self.redo_btn)
+        left_layout = QVBoxLayout()
+        left_layout.addWidget(self.open_btn)
+        left_layout.addWidget(self.undo_btn)
+        left_layout.addWidget(self.redo_btn)
+        left_layout.addWidget(self.reverse_btn)
+        left_layout.addWidget(self.overlay_btn)
+        left_layout.addWidget(self.merge_btn)
+        left_layout.addWidget(self.save_btn)
 
+        right_layout = QVBoxLayout()
         speed_layout = QHBoxLayout()
         speed_layout.addWidget(self.speed_btn)
         speed_layout.addWidget(self.speed_entry)
-        self.main_layout.addLayout(speed_layout)
-
-        self.main_layout.addWidget(self.reverse_btn)
-        self.main_layout.addWidget(self.overlay_btn)
-        self.main_layout.addWidget(self.merge_btn)
+        right_layout.addLayout(speed_layout)
 
         volume_layout = QHBoxLayout()
         volume_layout.addWidget(self.volume_btn)
         volume_layout.addWidget(self.volume_entry)
-        self.main_layout.addLayout(volume_layout)
+        right_layout.addLayout(volume_layout)
 
         slice_layout = QHBoxLayout()
         slice_layout.addWidget(self.slice_btn)
         slice_layout.addWidget(self.first_slice_entry)
         slice_layout.addWidget(self.second_slice_entry)
-        self.main_layout.addLayout(slice_layout)
+        right_layout.addLayout(slice_layout)
 
         fade_in_layout = QHBoxLayout()
         fade_in_layout.addWidget(self.fade_in_btn)
         fade_in_layout.addWidget(self.fade_in_entry)
-        self.main_layout.addLayout(fade_in_layout)
+        right_layout.addLayout(fade_in_layout)
 
         fade_out_layout = QHBoxLayout()
         fade_out_layout.addWidget(self.fade_out_btn)
         fade_out_layout.addWidget(self.fade_out_entry)
-        self.main_layout.addLayout(fade_out_layout)
+        right_layout.addLayout(fade_out_layout)
 
         repeat_layout = QHBoxLayout()
         repeat_layout.addWidget(self.repeat_btn)
         repeat_layout.addWidget(self.repeat_entry)
-        self.main_layout.addLayout(repeat_layout)
+        right_layout.addLayout(repeat_layout)
 
-        self.main_layout.addWidget(self.save_btn)
-        self.setLayout(self.main_layout)
+        # Main layout with left and right columns
+        main_layout = QHBoxLayout()
+        main_layout.addLayout(left_layout)
+        main_layout.addLayout(right_layout)
+
+        self.setLayout(main_layout)
 
     def create_button(self, text=None, slot=None, enabled=True, icon=None):
         button = QPushButton()
