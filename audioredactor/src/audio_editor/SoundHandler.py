@@ -7,8 +7,9 @@ from model.Metadata import Metadata
 
 
 class SoundHandler:
-    def __init__(self, parent=None):
-        self.song = Sound()
+    def __init__(self, timeline, parent=None):
+        self.timeline = timeline
+        self.song = Sound(self.timeline)
         mixer.init()
         self.parent = parent
         self.timer = QTimer()
@@ -31,6 +32,8 @@ class SoundHandler:
                 self.log_msg = "Opened changed sound"
             self.song.queue.append(self.song.track)
             self.song.history_stack.append(self.log_msg)
+            self.parent.update_list()
+            self.timeline.set_maximum(self.song.track.duration_seconds)
 
             self.parent.enable_controls()
         except Exception as e:
@@ -42,12 +45,10 @@ class SoundHandler:
 
     def play(self, play_btn):
         self.song.track.export("song.mp3", format="mp3", bitrate="320k", codec="libmp3lame", parameters=["-v", "0"])
-        self.parent.timeline.set_maximum(self.song.track.duration_seconds)
         mixer.music.load("song.mp3")
         mixer.music.play(loops=0)
         play_btn.setEnabled(False)
         self.timer.start(1000)
-
 
     def pause(self):
         mixer.music.pause()

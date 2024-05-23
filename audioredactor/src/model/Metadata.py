@@ -1,5 +1,4 @@
 from mutagen.mp3 import MP3
-from mutagen import id3 as mu
 
 class Metadata:
     def __init__(self, file_path=None):

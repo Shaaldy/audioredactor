@@ -13,10 +13,10 @@ class AudioEditor(QWidget):
     def __init__(self):
         super().__init__()
         self.timeline = TimeLine(self)
-        self.sound_handler = SoundHandler(self)
+        self.sound_handler = SoundHandler(self.timeline, self)
         self.setWindowTitle('Audio Editor')
         self.setGeometry(400, 100, 600, 650)
-        self.setStyleSheet('background-color: dark; color: white; font-size: 16px;')
+        self.setStyleSheet('background-color: #2E2E2E; color: #FFFFFF; font-size: 16px;')
 
         self.initUI()
 
