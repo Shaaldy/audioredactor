@@ -51,6 +51,7 @@ class SoundHandler:
             mixer.music.load("song.mp3")
         except Exception as e:
             self.parent.make_warning_msg(f"Failed to save sound file: {e}", "WARNING")
+
     def play(self):
         try:
             self.start = self.timeline.get_value()
