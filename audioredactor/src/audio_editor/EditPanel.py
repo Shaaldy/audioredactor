@@ -30,6 +30,7 @@ class EditPanel(QWidget):
         self.repeat_entry = self.create_line_edit(False, "Укажите количество повторов", '0')
         self.save_btn = self.create_button('Save', self.sound_handler.save, False)
 
+
         left_layout = QVBoxLayout()
         left_layout.addWidget(self.open_btn)
         left_layout.addWidget(self.undo_btn)
@@ -204,3 +205,5 @@ class EditPanel(QWidget):
             self.parent().update_list()
         else:
             self.parent().make_warning_msg('Please write a right value!', "WARNING")
+
+

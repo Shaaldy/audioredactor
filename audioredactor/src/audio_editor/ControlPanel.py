@@ -13,11 +13,13 @@ class ControlPanel(QWidget):
         self.play_btn = self.create_button(icon='pictures/1.png', slot=self.play, enabled=False)
         self.pause_btn = self.create_button(icon='pictures/2.png', slot=self.pause, enabled=False)
         self.stop_btn = self.create_button(icon='pictures/3.png', slot=self.stop, enabled=False)
+        self.commit_btn = self.create_button('Commit change', self.commit, False)
 
         control_layout = QHBoxLayout()
         control_layout.addWidget(self.play_btn)
         control_layout.addWidget(self.pause_btn)
         control_layout.addWidget(self.stop_btn)
+        control_layout.addWidget(self.commit_btn)
         self.setLayout(control_layout)
 
     def create_button(self, text=None, slot=None, enabled=True, icon=None):
@@ -33,7 +35,7 @@ class ControlPanel(QWidget):
         return button
 
     def play(self):
-        self.sound_handler.play(self.play_btn)
+        self.sound_handler.play()
 
     def pause(self):
         if self.paused:
@@ -42,6 +44,9 @@ class ControlPanel(QWidget):
         else:
             self.sound_handler.pause()
             self.paused = True
+
+    def commit(self):
+        self.sound_handler.commit()
 
     def stop(self):
         self.sound_handler.stop()

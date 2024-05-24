@@ -51,6 +51,7 @@ class AudioEditor(QWidget):
         self.control_panel.play_btn.setEnabled(True)
         self.control_panel.pause_btn.setEnabled(True)
         self.control_panel.stop_btn.setEnabled(True)
+        self.control_panel.commit_btn.setEnabled(True)
         self.edit_panel.undo_btn.setEnabled(True)
         self.edit_panel.redo_btn.setEnabled(True)
         self.edit_panel.speed_btn.setEnabled(True)

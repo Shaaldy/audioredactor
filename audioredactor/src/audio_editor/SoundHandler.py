@@ -15,6 +15,7 @@ class SoundHandler:
         self.timer = QTimer()
         self.timer.timeout.connect(self.update_timeline)
         self.log_msg = None
+        self.start = 0
 
     def open_sound(self):
         try:
@@ -43,12 +44,21 @@ class SoundHandler:
     def save(self):
         self.song.save()
 
-    def play(self, play_btn):
-        self.song.track.export("song.mp3", format="mp3", bitrate="320k", codec="libmp3lame", parameters=["-v", "0"])
-        mixer.music.load("song.mp3")
-        mixer.music.play(loops=0)
-        play_btn.setEnabled(False)
-        self.timer.start(1000)
+    def commit(self):
+        try:
+            self.__delete__()
+            self.song.track.export("song.mp3", format="mp3", bitrate="320k", codec="libmp3lame", parameters=["-v", "0"])
+            mixer.music.load("song.mp3")
+        except Exception as e:
+            self.parent.make_warning_msg(f"Failed to save sound file: {e}", "WARNING")
+    def play(self):
+        try:
+            self.start = self.timeline.get_value()
+            self.pause()
+            mixer.music.play(start=self.start, loops=0)
+            self.timer.start(1000)
+        except Exception:
+            self.parent.make_warning_msg(f"Download change at first", "WARNING")
 
     def pause(self):
         mixer.music.pause()
@@ -63,7 +73,13 @@ class SoundHandler:
 
     def update_timeline(self):
         if mixer.music.get_busy():
-            current_time = mixer.music.get_pos() // 1000
+            current_time = mixer.music.get_pos() // 1000 + self.start
             self.parent.timeline.set_value(current_time)
         else:
             self.timer.stop()
+
+    def __delete__(self):
+        if mixer.music.get_busy():
+            mixer.music.stop()
+        mixer.music.rewind()
+        mixer.music.unload()

@@ -22,6 +22,7 @@ class TimeLine(QWidget):
         self.setLayout(layout)
         self.update_slider_stylesheet()
 
+        self.timeline_slider.valueChanged.connect(self.set_value)
     def update_slider_stylesheet(self):
         # Update the stylesheet to fill the passed distance
         style = """
@@ -63,3 +64,6 @@ class TimeLine(QWidget):
     def set_value(self, value):
         self.timeline_slider.setValue(value)
         self.current_time_label.setText(f"{value // 60}:{value % 60:02}")
+
+    def get_value(self):
+        return self.timeline_slider.value()
