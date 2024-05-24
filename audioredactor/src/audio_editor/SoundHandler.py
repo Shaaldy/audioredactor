@@ -1,20 +1,24 @@
 from PyQt6.QtWidgets import QFileDialog
-from PyQt6.QtCore import QTimer
+from PyQt6.QtCore import QTimer, pyqtSignal
 from pydub import AudioSegment
-from pygame import mixer
+from pydub.playback import play
+import threading
 from model.Sound import Sound
 from model.Metadata import Metadata
-
+import time
 
 class SoundHandler:
     def __init__(self, timeline, parent=None):
+        super().__init__()
         self.timeline = timeline
         self.song = Sound(self.timeline)
-        mixer.init()
         self.parent = parent
-        self.timer = QTimer()
-        self.timer.timeout.connect(self.update_timeline)
         self.log_msg = None
+        self.is_playing = False
+        self.play_thread = None
+
+        self.timer_thread = QTimer()
+        self.timer_thread.timeout.connect(self.update_timeline)
 
     def open_sound(self):
         try:
@@ -43,27 +47,38 @@ class SoundHandler:
     def save(self):
         self.song.save()
 
-    def play(self, play_btn):
-        self.song.track.export("song.mp3", format="mp3", bitrate="320k", codec="libmp3lame", parameters=["-v", "0"])
-        mixer.music.load("song.mp3")
-        mixer.music.play(loops=0)
+    def play(self, play_btn=None):
+        def playback():
+            self.is_playing = True
+            play(self.song.track)
+            self.is_playing = False
+
+        self.play_thread = threading.Thread(target=playback)
+        self.play_thread.start()
         play_btn.setEnabled(False)
-        self.timer.start(1000)
+
+        self.timer_thread = threading.Thread(target=self.start_timer)
+        self.timer_thread.start()
+
+    def start_timer(self):
+        while self.is_playing:
+            time.sleep(1)
+            self.update_timeline()
 
     def pause(self):
-        mixer.music.pause()
+        if self.is_playing:
+            self.is_playing = False
+            self.play()
 
     def unpause(self):
-        mixer.music.unpause()
-        self.timer.start()
+        if not self.is_playing:
+            self.is_playing = True
+            self.play()
 
     def stop(self):
         self.pause()
         self.timer.stop()
 
     def update_timeline(self):
-        if mixer.music.get_busy():
-            current_time = mixer.music.get_pos() // 1000
-            self.parent.timeline.set_value(current_time)
-        else:
-            self.timer.stop()
+        current_time = self.timeline.get_value() + 1
+        self.timeline.set_value(current_time)
