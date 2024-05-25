@@ -1,5 +1,6 @@
 from mutagen.mp3 import MP3
 
+
 class Metadata:
     def __init__(self, file_path=None):
         self.file_path = file_path
