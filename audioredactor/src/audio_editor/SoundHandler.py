@@ -28,6 +28,8 @@ class SoundHandler:
             try:
                 metadata = Metadata(path)
                 title, artist = metadata.get_title(), metadata.get_artist()
+                metadata.load_art() # Загрузка изображения альбома в файл image.jpg
+                self.parent.load_album_art("pictures/image.jpg")
                 self.log_msg = f"Opened {title} by {artist}"
             except Exception as e:
                 self.log_msg = "Opened changed sound"

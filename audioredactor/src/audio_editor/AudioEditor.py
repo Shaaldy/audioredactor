@@ -1,15 +1,15 @@
-from .EditPanel import EditPanel
 from PyQt6.QtWidgets import (QWidget, QPushButton, QLabel, QVBoxLayout,
                              QHBoxLayout, QListWidget, QScrollBar, QDialog)
+from PyQt6.QtGui import QPixmap
 from PyQt6.QtCore import Qt
+from .EditPanel import EditPanel
 from .SoundHandler import SoundHandler
 from .ControlPanel import ControlPanel
 from .TimeLine import TimeLine
 
 
-# Сделать френдли
 class AudioEditor(QWidget):
-    
+
     def __init__(self):
         super().__init__()
         self.timeline = TimeLine(self)
@@ -32,7 +32,6 @@ class AudioEditor(QWidget):
         self.listbox = QListWidget()
         list_layout.addWidget(self.listbox)
 
-
         self.main_layout.addWidget(self.timeline)
 
         self.scrollbar = QScrollBar()
@@ -40,8 +39,19 @@ class AudioEditor(QWidget):
         list_layout.addWidget(self.scrollbar)
         self.main_layout.addLayout(list_layout)
 
+        # Add album art
+        self.album_art = QLabel(self)
+        self.load_album_art("pictures/default_image.jpg")
+        self.main_layout.addWidget(self.album_art)
 
         self.setLayout(self.main_layout)
+
+    def load_album_art(self, image_path):
+        pixmap = QPixmap(image_path)
+        if not pixmap.isNull():
+            self.album_art.setPixmap(pixmap.scaled(200, 200, Qt.AspectRatioMode.KeepAspectRatio))
+        else:
+            self.load_album_art("pictures/default_image.jpg")
 
     def update_list(self):
         self.listbox.clear()

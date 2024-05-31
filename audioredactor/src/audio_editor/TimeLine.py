@@ -23,8 +23,8 @@ class TimeLine(QWidget):
         self.update_slider_stylesheet()
 
         self.timeline_slider.valueChanged.connect(self.set_value)
+
     def update_slider_stylesheet(self):
-        # Update the stylesheet to fill the passed distance
         style = """
            QSlider::groove:horizontal {
                background: #444444;  /* Background color of the groove */
